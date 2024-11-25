@@ -53,3 +53,163 @@ function analyzeText() {
     document.getElementById('output').innerHTML = "Erro ao processar";
   });
 }
+
+async function analyzeText() {
+  const input = document.getElementById('input').value;
+  const responseDiv = document.getElementById('response');
+
+  // Exibe mensagem de carregamento
+  responseDiv.innerHTML = "A IA está processando...";
+
+  // Configuração da API de IA
+  const apiKey = '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';
+  const apiUrl = 'https://api.openai.com/v1/completions';
+
+  // Dados para enviar na requisição
+  const data = {
+    model: "text-davinci-003", // Modelo de linguagem
+    prompt: input,             // Texto enviado pelo usuário
+    max_tokens: 100,           // Limite de palavras na resposta
+    temperature: 0.7           // Criatividade da resposta (0.7 = moderada)
+  };
+
+  try {
+    // Envia a requisição para a API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    // Processa a resposta da API
+    const result = await response.json();
+    responseDiv.innerHTML = `<b>Resposta da IA:</b> ${result.choices[0].text.trim()}`;
+  } catch (error) {
+    // Exibe erro se algo der errado
+    responseDiv.innerHTML = "Erro ao conectar com a IA.";
+  }
+}
+
+const history = JSON.parse(localStorage.getItem('history')) || [];
+history.push({ question: input, answer: result.choices[0].text.trim() });
+localStorage.setItem('history', JSON.stringify(history));)
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat com IA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Converse com a IA</h1>
+  <div class="chat-container">
+    <textarea id="userInput" placeholder="Digite sua mensagem aqui..."></textarea>
+    <button id="sendMessage" onclick="sendMessage()">Enviar</button>
+    <div id="chatOutput"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 20px;
+}
+
+.chat-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+textarea {
+  width: 100%;
+  height: 100px;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+#chatOutput {
+  margin-top: 20px;
+  padding: 10px;
+  background: #e9e9e9;
+  border-radius: 4px;
+  text-align: left;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+async function sendMessage() {
+  const userInput = document.getElementById("userInput").value;
+  const chatOutput = document.getElementById("chatOutput");
+
+  // Mostrar mensagem do usuário no chat
+  chatOutput.innerHTML += `<p><b>Você:</b> ${userInput}</p>`;
+  document.getElementById("userInput").value = ""; // Limpar campo de texto
+
+  // Mostrar mensagem de carregamento
+  chatOutput.innerHTML += `<p><i>IA está processando...</i></p>`;
+  chatOutput.scrollTop = chatOutput.scrollHeight;
+
+  // Configuração da API
+  const apiKey = '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'; // Substitua pela sua chave
+  const apiUrl = 'https://api.openai.com/v1/completions';
+  const data = {
+    model: "text-davinci-003",
+    prompt: userInput,
+    max_tokens: 100,
+    temperature: 0.7
+  };
+
+  try {
+    // Requisição para a API
+    const response = await fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    const result = await response.json();
+    const aiResponse = result.choices[0].text.trim();
+
+    // Mostrar resposta da IA no chat
+    chatOutput.innerHTML += `<p><b>IA:</b> ${aiResponse}</p>`;
+    chatOutput.scrollTop = chatOutput.scrollHeight;
+  } catch (error) {
+    // Mostrar erro no chat
+    chatOutput.innerHTML += `<p><b>Erro:</b> Não foi possível conectar com a IA.</p>`;
+    chatOutput.scrollTop = chatOutput.scrollHeight;
+  }
+}
