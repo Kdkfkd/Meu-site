@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Site com IA</title>
+  </head>
+  <body>
+    <h1>Bem-vindo ao site de ai!</h1>
+    <button onclick="analyzeText()">Analisar Texto</button>
+    <div id="output"></div>
+  </body>
+</html>
+
+function analyzeText() {
+  var userInput = "Exemplo de texto para IA analisar";
+  document.getElementById('output').innerHTML = "Processando...";
+
+  // Chamada para a API de IA (por exemplo, OpenAI, IBM Watson)
+  fetch('https://api.exemplo.com/ai-analyze', {
+    method: 'POST',
+    body: JSON.stringify({text: userInput}),
+    headers: { 'Content-Type': 'application/json' }
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('output').innerHTML = "Resultado: " + data.result;
+  })
+  .catch(error => {
+    document.getElementById('output').innerHTML = "Erro ao processar";
+  });
+  
+  const apiKey = 'sua_chave_api_openai';
+
+function analyzeText() {
+  var userInput = "Texto para análise de IA";
+  document.getElementById('output').innerHTML = "Processando...";
+
+  fetch('https://api.openai.com/v1/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${apiKey}`
+    },
+    body: JSON.stringify({
+      model: "text-davinci-003",  // Ou o modelo desejado
+      prompt: userInput,
+      max_tokens: 100
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    document.getElementById('output').innerHTML = "Resposta da IA: " + data.choices[0].text.trim();
+  })
+  .catch(error => {
+    document.getElementById('output').innerHTML = "Erro ao processar";
+  });
+}
