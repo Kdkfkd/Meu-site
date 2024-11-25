@@ -1,59 +1,3 @@
-<html>
-  <head>
-    <title>Site com IA</title>
-  </head>
-  <body>
-    <h1>Bem-vindo ao site de ai!</h1>
-    <button onclick="analyzeText()">Analisar Texto</button>
-    <div id="output"></div>
-  </body>
-</html>
-
-function analyzeText() {
-  var userInput = "Exemplo de texto para IA analisar";
-  document.getElementById('output').innerHTML = "Processando...";
-
-  // Chamada para a API de IA (por exemplo, OpenAI, IBM Watson)
-  fetch('https://api.exemplo.com/ai-analyze', {
-    method: 'POST',
-    body: JSON.stringify({text: userInput}),
-    headers: { 'Content-Type': 'application/json' }
-  })
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('output').innerHTML = "Resultado: " + data.result;
-  })
-  .catch(error => {
-    document.getElementById('output').innerHTML = "Erro ao processar";
-  });
-  
-  const apiKey = 'sua_chave_api_openai';
-
-function analyzeText() {
-  var userInput = "Texto para análise de IA";
-  document.getElementById('output').innerHTML = "Processando...";
-
-  fetch('https://api.openai.com/v1/completions', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${apiKey}`
-    },
-    body: JSON.stringify({
-      model: "text-davinci-003",  // Ou o modelo desejado
-      prompt: userInput,
-      max_tokens: 100
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById('output').innerHTML = "Resposta da IA: " + data.choices[0].text.trim();
-  })
-  .catch(error => {
-    document.getElementById('output').innerHTML = "Erro ao processar";
-  });
-}
-
 async function analyzeText() {
   const input = document.getElementById('input').value;
   const responseDiv = document.getElementById('response');
@@ -91,32 +35,9 @@ async function analyzeText() {
     // Exibe erro se algo der errado
     responseDiv.innerHTML = "Erro ao conectar com a IA.";
   }
-}
-
-const history = JSON.parse(localStorage.getItem('history')) || [];
+} const history = JSON.parse(localStorage.getItem('history')) || [];
 history.push({ question: input, answer: result.choices[0].text.trim() });
-localStorage.setItem('history', JSON.stringify(history));)
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat com IA</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <h1>Converse com a IA</h1>
-  <div class="chat-container">
-    <textarea id="userInput" placeholder="Digite sua mensagem aqui..."></textarea>
-    <button id="sendMessage" onclick="sendMessage()">Enviar</button>
-    <div id="chatOutput"></div>
-  </div>
-  <script src="script.js"></script>
-</body>
-</html>
-
-body {
+localStorage.setItem('history', JSON.stringify(history)); body {
   font-family: Arial, sans-serif;
   background-color: #f4f4f4;
   color: #333;
@@ -166,9 +87,7 @@ button:hover {
   text-align: left;
   max-height: 300px;
   overflow-y: auto;
-}
-
-async function sendMessage() {
+} async function sendMessage() {
   const userInput = document.getElementById("userInput").value;
   const chatOutput = document.getElementById("chatOutput");
 
@@ -181,7 +100,7 @@ async function sendMessage() {
   chatOutput.scrollTop = chatOutput.scrollHeight;
 
   // Configuração da API
-  const apiKey = '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'; // Substitua pela sua chave
+  const apiKey = 'SUA_API_KEY_AQUI'; // Substitua pela sua chave
   const apiUrl = 'https://api.openai.com/v1/completions';
   const data = {
     model: "text-davinci-003",
